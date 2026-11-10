@@ -35,6 +35,12 @@ public:
         // TODO 2:
         // Free everything this scene owns.
         // Think about what it owns, and what each slot points to.
+        for (int i = 0; i < numChoices_; i++) {
+            delete choices_[i];
+        }
+        delete[] choices_;
+        delete data_;
+
     }
 
     T* getData() const {
@@ -47,17 +53,20 @@ public:
 
     // TODO 3: true if this scene is an ending.
     bool isEnding() const {
-        return false;
+        return numChoices_ == 0;
     }
 
     // TODO 4: the scene behind slot index.
     // Return nullptr if index is not a real slot.
     Scene<T>* getChoice(int index) const {
-        return nullptr;
+        if (index < 0 || index >= numChoices_) return nullptr;
+        return choices_[index];
     }
 
     // TODO 5: put next into slot index.
     // Do nothing if index is not a real slot.
     void setChoice(int index, Scene<T>* next) {
+        if (index < 0 || index >= numChoices_) return;
+        choices_[index] = next;
     }
 };
