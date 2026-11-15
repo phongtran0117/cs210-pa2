@@ -93,8 +93,47 @@ bool Adventure::load(const std::string& fileName) {
 //   - If anything goes wrong at any depth, return nullptr
 //     and make sure nothing you already built is leaked.
 Scene<Moment>* Adventure::readScene(std::ifstream& in, const std::string& label) {
-    return nullptr;
+    std::string text, hpText, lootText, item, choicesText;
+    if (!readField(in, "SCENE", text)) return nullptr;
+    if (!readField(in, "HP", hpText)) return nullptr;
+    if (!readField(in, "LOOT", lootText)) return nullptr;
+    if (!readField(in, "ITEM", item)) return nullptr;
+    if (!readField(in, "CHOICES", choicesText)) return nullptr;
+
+    int hp = std::stoi(hpText);
+    int loot = std::stoi(lootText);
+    int numChoices = std::stoi(choicesText);
+
+    // STEP 3: reject a bad number of choices
+    if (numChoices < 0 || numChoices > Scene<Moment>::MAX_CHOICES) {
+        std::cout << "Error: scene \"" << text << "\" has " << numChoices << " choices. The limit is 3." << std::endl;
+        return nullptr;
+    }
+
+    // STEP 4: create the Moment and the Scene
+    Moment* moment = new Moment(text, label, hp, loot, item);
+    Scene<Moment>* scene = new Scene<Moment>(moment, numChoices);
+
+    // STEP 5: read each door
+    for (int i = 0; i < numChoices; i++) {
+        std::string childLabel;
+        if (!readField(in, "LABEL", childLabel)) {
+            delete scene;                    // free everything built so far
+            return nullptr;
+        }
+        Scene<Moment>* child = readScene(in, childLabel);
+        if (child == nullptr) {
+            delete scene;                    // free everything built so far
+            return nullptr;
+        }
+        scene->setChoice(i, child);
+    }
+
+    return scene;
 }
+
+
+
 
 // ===================== PLAYING =====================
 
