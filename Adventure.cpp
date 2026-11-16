@@ -309,7 +309,24 @@ void Adventure::greedyRun() const {
 //   - Put the path of the best run into bestPath.
 //   - Must be recursive and look at every choice.
 int Adventure::bestLoot(Scene<Moment>* scene, int hp, const std::string& path, std::string& bestPath) const {
-    return -1;
+    hp += scene->getData()->getHpChange();
+    if (hp <= 0) return -1;                       // this scene kills you
+    if (scene->isEnding()) {
+        bestPath = path;                          // survived to an ending: this is the path
+        return scene->getData()->getLoot();
+    }
+
+    int best = -1;                                // no surviving door found yet
+    for (int i = 0; i < scene->getNumChoices(); i++) {
+        std::string childPath;                    // this door's own path
+        int result = bestLoot(scene->getChoice(i), hp, extendPath(path, i + 1), childPath);
+        if (result > best) {                      // strictly better? (ties keep the lower door)
+            best = result;
+            bestPath = childPath;
+        }
+    }
+    if (best == -1) return -1;                    // every door was a dead end
+    return best + scene->getData()->getLoot();    // best below + this scene's loot
 }
 
 // TODO 19: the optimal advisor. Use bestLoot from the first scene.
@@ -322,4 +339,14 @@ int Adventure::bestLoot(Scene<Moment>* scene, int hp, const std::string& path, s
 //   Optimal advisor
 //     Result: no path survives this story
 void Adventure::optimalRun() const {
+    std::string bestPath;
+    int best = bestLoot(tree_.getRoot(), startHp_, "", bestPath);
+    std::cout << "Optimal advisor" << std::endl;
+    if (best == -1) {
+        std::cout << "  Result: no path survives this story" << std::endl;
+        return;
+    }
+    std::cout << "  Path: " << bestPath << std::endl;
+    std::cout << "  Loot: " << best << std::endl;
+    std::cout << "  Result: reached an ending" << std::endl;
 }
