@@ -1,6 +1,90 @@
 START_HP 10
-SCENE Replace this file with your own story.
+SCENE Steve was told there were diamonds in the mine, so he is going to look for them.
 HP 0
 LOOT 0
 ITEM none
-CHOICES 0
+CHOICES 3
+LABEL Dig straight down
+  SCENE He finds lots of ore like iron and gold, but no diamonds.
+  HP -2
+  LOOT 6
+  ITEM none
+  CHOICES 2
+  LABEL Keep digging even deeper
+    SCENE He keeps digging and finds a lava pool with a diamond on the other side.
+    HP -4
+    LOOT 4
+    ITEM none
+    CHOICES 1
+    LABEL Keep digging and try to reach the diamond across the lava pool
+      SCENE He falls in lava and dies.
+      HP -10
+      LOOT 0
+      ITEM none
+      CHOICES 0
+  LABEL Climb back up and mine around
+    SCENE He breaks a couple of blocks and finds one diamond.
+    HP 0
+    LOOT 2
+    ITEM Diamond
+    CHOICES 0
+LABEL Break into a cave full of creepers
+  SCENE He enters the cave and starts hitting the mobs with his pickaxe.
+  HP -3
+  LOOT 3
+  ITEM none
+  CHOICES 2
+  LABEL Slay the creepers and go deeper down the cave
+    SCENE He fights over 4 zombies and takes damage.
+    HP -2
+    LOOT 2
+    ITEM none
+    CHOICES 1
+    LABEL Kill all the mobs and keep going
+      SCENE He digs a small hole, sits, eats, and heals.
+      HP 1
+      LOOT 1
+      ITEM none
+      CHOICES 2
+      LABEL Go for the diamonds behind the mutant skeleton
+        SCENE He hits the skeleton but gets hit back. Then he runs, and the skeleton falls in a hole.
+        HP -2
+        LOOT 3
+        ITEM none
+        CHOICES 1
+        LABEL Run in with little health and grab the diamonds
+          SCENE He finds 10 diamonds and crafts a Diamond Pickaxe.
+          HP 0
+          LOOT 10
+          ITEM Diamond Pickaxe
+          CHOICES 0
+      LABEL Go home
+        SCENE He goes home without the diamonds.
+        HP 0
+        LOOT 2
+        ITEM none
+        CHOICES 0
+  LABEL Run back out
+    SCENE He runs out of the cave, scared.
+    HP 0
+    LOOT 1
+    ITEM none
+    CHOICES 0
+LABEL Dig down slowly and carefully
+  SCENE He goes a little deeper, slowly.
+  HP 0
+  LOOT 1
+  ITEM none
+  CHOICES 1
+  LABEL Mine the iron around the hole
+    SCENE He gets a few iron ores around the hole he dug.
+    HP 0
+    LOOT 1
+    ITEM none
+    CHOICES 1
+    LABEL Take the ores and leave
+      SCENE He gets his ores, then leaves.
+      HP 0
+      LOOT 1
+      ITEM none
+      CHOICES 0
