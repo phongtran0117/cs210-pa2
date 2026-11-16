@@ -174,6 +174,9 @@ void Adventure::play() {
 //   Endings: <count>
 //   Longest playthrough: <height> choices
 void Adventure::printStats() const {
+    std::cout << "Scenes: " << tree_.countScenes() << std::endl;
+    std::cout << "Endings: " << tree_.countEndings() << std::endl;
+    std::cout << "Longest playthrough: " << tree_.height() << " choices" << std::endl;
 }
 
 // TODO 15: print every ending in the story, one per line.
